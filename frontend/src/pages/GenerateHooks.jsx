@@ -314,11 +314,11 @@ const HookGeneratorScreen = () => {
       }}
     >
       <div className="container mx-auto px-4 py-12 md:py-20 relative z-10 flex flex-col items-center">
-        
+         <Header isVisible={isVisible} />
         {/* The main form card */}
         <div className={`transition-all duration-1000 delay-200 w-full max-w-3xl ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
           <div className="bg-white rounded-xl shadow-2xl border border-gray-200 p-6 md:p-8">
-            <Header isVisible={isVisible} />
+           
             <TextAreaInput
               value={formData.hookContent}
               onChange={(e) => setFormData(prev => ({...prev, hookContent: e.target.value}))}

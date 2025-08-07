@@ -45,7 +45,7 @@ const Hero = () => {
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-center px-6 gap-16 relative z-10">
 
         {/* Left Content Section */}
-        <div className={`lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className={`lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-15 md:mb-0 items-center text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           
           {/* Badge */}
           <div className="inline-flex items-center px-4 py-2 mb-6 text-sm font-medium text-slate-700 bg-slate-100 rounded-full border border-slate-200 animate-fadeInUp">
