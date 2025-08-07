@@ -307,7 +307,7 @@ const HookGeneratorScreen = () => {
 
   return (
     <div
-      className="bg-gray-50 text-black min-h-screen relative overflow-x-hidden"
+      className="bg-gray-50 text-black max-h-screen relative overflow-x-hidden"
       style={{ 
         backgroundImage: `url("${dotPattern}")`,
         fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
