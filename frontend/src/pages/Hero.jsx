@@ -42,7 +42,7 @@ const Hero = () => {
         <div className="absolute bottom-20 right-40 w-12 h-12 bg-gray-300 rounded-full opacity-30 animate-bounce" style={{animationDelay: '0.5s'}}></div>
       </div> */}
 
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-center px-6 py-32 gap-16 relative z-10">
+      <div className="container mx-auto flex flex-col md:flex-row items-center justify-center px-6 gap-16 relative z-10">
 
         {/* Left Content Section */}
         <div className={`lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
@@ -62,7 +62,7 @@ const Hero = () => {
           {/* Subtitle with typing animation effect */}
           <p className="mb-8 leading-relaxed text-xl md:text-2xl text-gray-700 font-medium max-w-2xl">
             Paste your content. Get scroll-stopping hooks. 
-            <span className="text-slate-800 font-semibold"> Powered by hook.ai's advanced AI & social media psychology.</span>
+            <span className="text-slate-800 font-semibold"> Powered by hooks.ai's advanced AI & social media psychology.</span>
           </p>
 
           {/* Stats Row */}
@@ -108,7 +108,7 @@ const Hero = () => {
               {/* Content */}
               <div className="relative z-10">
                 <div className="text-6xl mb-4 animate-bounce">🪝</div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">hook.ai Generator</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">hooks.ai Generator</h3>
                 
                 {/* Rotating Sample Hook */}
                 <div className="bg-slate-50 rounded-lg p-4 mb-6 border-l-4 border-slate-600">
@@ -241,8 +241,6 @@ const Hero = () => {
 };
 
 export default Hero;
-
-
 
 // import React, { useState, useEffect } from 'react';
 // import { motion, useAnimate } from 'framer-motion';
