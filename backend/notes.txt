@@ -1,3 +1,149 @@
+/backend
+├── app
+│   ├── main.py                  ← Entry point
+│   ├── api.py                   ← Handles routes & API endpoints
+│   ├── rag_pipeline.py          ← Core RAG logic
+│   ├── embeddings.py            ← Embedding logic (OpenAI or local)
+│   ├── vector_store.py          ← Vector search (use FAISS, not Pinecone)
+│   ├── llm.py                   ← Handles model inference (Ollama / LLMs)
+│   └── data
+│       └── hooks.json           ← JSON file with themes and hook examples
+├── requirements.txt
+└── README.md
+
+
+
+
+
+├── main.py                  # FastAPI entrypoint
+├── rag_pipeline/
+│   ├── __init__.py
+│   ├── retriever.py         # Similarity search logic
+│   ├── embedder.py          # Embedding generator (HuggingFace)
+│   ├── generator.py         # Ollama or LLM wrapper
+│   ├── pipeline.py          # Full RAG logic (glue everything)
+│   └── data_loader.py       # Load and chunk your hook dataset
+│
+├── data/
+│   └── hooks_dataset.json   # Your static training hooks (pre-chunked or raw)
+│
+├── models/
+│   └── vector_store/        # Chroma or other local vector DB files
+│
+├── utils/
+│   └── logger.py            # Logging setup
+│
+├── requirements.txt
+└── README.md
+💡 Purpose of Each File:
+main.py
+Entry point for FastAPI.
+
+Routes:
+
+/generate-hook: Accepts script context and theme.
+
+Calls pipeline.generate_hook(context, theme).
+
+retriever.py
+Connects to ChromaDB.
+
+Performs similarity search using theme-matched embeddings.
+
+Returns top-k hooks.
+
+embedder.py
+Loads the embedding model (sentence-transformers, bge, instructor-xl, etc.).
+
+Converts context or theme into vector form.
+
+Used by retriever.py and for pre-processing training data.
+
+generator.py
+Loads LLM via Ollama API (like Mistral, OpenChat, etc.).
+
+Takes context + relevant hooks and generates a new hook.
+
+pipeline.py
+Orchestrates the full RAG flow:
+
+Embed context + theme
+
+Retrieve matching hooks
+
+Pass everything to LLM
+
+Return a clean output
+
+data_loader.py
+Pre-loads your existing hook database.
+
+Optionally pre-chunks large hooks if needed.
+
+hooks_dataset.json
+Your pre-created dataset with structure like:
+
+json
+Copy
+Edit
+[
+  {
+    "theme": "motivation",
+    "hook": "What if I told you one decision could change your life forever?"
+  }
+]
+
+
+
+
+
+
+
+
+
+
+[User Input] → script + theme
+        ↓
+[Embed Theme/Context]
+        ↓
+[Retrieve Top Hooks] ← from ChromaDB
+        ↓
+[Pass to LLM]
+        ↓
+[Generated Hook]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 hookai-rag-backend/
 ├── app/
 │   ├── __init__.py

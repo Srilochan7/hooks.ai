@@ -138,27 +138,27 @@ const ThemeSelect = ({ value, onChange, options }) => (
   </div>
 );
 
-const AudienceButtonGroup = ({ selected, onToggle, options }) => (
-    <div className="mb-8">
-      <label className="block text-lg font-semibold text-gray-900 mb-3">Who is the audience for this hook?</label>
-      <div className="flex flex-wrap gap-2">
-        {options.map((option) => (
-          <button
-            key={option}
-            type="button"
-            onClick={() => onToggle(option)}
-            className={`px-3 py-1.5 rounded-full border text-xs font-medium transition-all duration-300 ${
-              selected.includes(option)
-                ? 'bg-blue-600 border-blue-600 text-white shadow-sm'
-                : 'bg-white border-gray-300 text-gray-700 hover:border-gray-400'
-            }`}
-          >
-            {option}
-          </button>
-        ))}
-      </div>
-    </div>
-);
+// const AudienceButtonGroup = ({ selected, onToggle, options }) => (
+//     <div className="mb-8">
+//       <label className="block text-lg font-semibold text-gray-900 mb-3">Who is the audience for this hook?</label>
+//       <div className="flex flex-wrap gap-2">
+//         {options.map((option) => (
+//           <button
+//             key={option}
+//             type="button"
+//             onClick={() => onToggle(option)}
+//             className={`px-3 py-1.5 rounded-full border text-xs font-medium transition-all duration-300 ${
+//               selected.includes(option)
+//                 ? 'bg-blue-600 border-blue-600 text-white shadow-sm'
+//                 : 'bg-white border-gray-300 text-gray-700 hover:border-gray-400'
+//             }`}
+//           >
+//             {option}
+//           </button>
+//         ))}
+//       </div>
+//     </div>
+// );
 
 const SubmitButton = ({ isGenerating, isDisabled, onClick }) => (
   <div className="mt-6 text-center">
@@ -244,14 +244,14 @@ const HookGeneratorScreen = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleAudienceToggle = (audience) => {
-    setFormData(prev => ({
-      ...prev,
-      audience: prev.audience.includes(audience)
-        ? prev.audience.filter(a => a !== audience)
-        : [...prev.audience, audience]
-    }));
-  };
+  // const handleAudienceToggle = (audience) => {
+  //   setFormData(prev => ({
+  //     ...prev,
+  //     audience: prev.audience.includes(audience)
+  //       ? prev.audience.filter(a => a !== audience)
+  //       : [...prev.audience, audience]
+  //   }));
+  // };
 
   const generateHooks = (content, intent, tone, numVariants) => {
     // Get templates for the selected intent
@@ -314,61 +314,52 @@ const HookGeneratorScreen = () => {
       }}
     >
       <div className="container mx-auto px-4 py-12 md:py-20 relative z-10 flex flex-col items-center">
-         <Header isVisible={isVisible} />
-        {/* The main form card */}
-        <div className={`transition-all duration-1000 delay-200 w-full max-w-3xl ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
-          <div className="bg-white rounded-xl shadow-2xl border border-gray-200 p-6 md:p-8">
-           
-            <TextAreaInput
-              value={formData.hookContent}
-              onChange={(e) => setFormData(prev => ({...prev, hookContent: e.target.value}))}
-            />
-            <AudienceButtonGroup
-              selected={formData.audience}
-              onToggle={handleAudienceToggle}
-              options={audienceOptions}
-            />
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <CompactSelectInput
-                  name="tone"
-                  label="Tone"
-                  value={formData.tone}
-                  onChange={handleInputChange}
-                  options={['Professional', 'Casual', 'Urgent', 'Friendly', 'Mysterious']}
-                />
-                <CompactSelectInput
-                  name="intent"
-                  label="Intent"
-                  value={formData.intent}
-                  onChange={handleInputChange}
-                  options={['Driving Curiosity', 'Educational', 'Entertainment', 'Inspirational', 'Sales']}
-                />
-                <CompactSelectInput
-                  name="variants"
-                  label="No. of variants"
-                  value={formData.variants}
-                  onChange={handleInputChange}
-                  options={['1', '2', '3', '4', '5']}
-                />
-                <ThemeSelect
-                    value={formData.theme}
-                    onChange={(e) => setFormData(prev => ({...prev, theme: e.target.value}))}
-                    options={themeOptions}
-                />
-            </div>
-            <SubmitButton
-              isGenerating={isGenerating}
-              isDisabled={isSubmitDisabled}
-              onClick={handleSubmit}
-            />
-          </div>
-        </div>
+  <Header isVisible={isVisible} />
+  {/* The main form card */}
+  <div className={`transition-all duration-1000 delay-200 w-full max-w-3xl ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
+    <div className="bg-white rounded-xl shadow-2xl border border-gray-200 p-6 md:p-8">
+      
+      <TextAreaInput
+        value={formData.hookContent}
+        onChange={(e) => setFormData(prev => ({...prev, hookContent: e.target.value}))}
+      />
 
-        {/* The results section, which appears only after hooks are generated */}
-        {generatedHooks.length > 0 && !isGenerating && (
-          <ResultsSection hooks={generatedHooks} onReset={handleReset} />
-        )}
+      {/* Container for the inline controls */}
+      <div className="flex flex-wrap items-end gap-7 mt-6">
+        <CompactSelectInput
+          name="tone"
+          label="Tone"
+          value={formData.tone}
+          onChange={handleInputChange}
+          options={['Professional', 'Casual', 'Urgent', 'Friendly', 'Mysterious']}
+        />
+        <CompactSelectInput
+          name="intent"
+          label="Intent"
+          value={formData.intent}
+          onChange={handleInputChange}
+          options={['Driving Curiosity', 'Educational', 'Entertainment', 'Inspirational', 'Sales']}
+        />
+        <ThemeSelect
+          value={formData.theme}
+          onChange={(e) => setFormData(prev => ({...prev, theme: e.target.value}))}
+          options={themeOptions}
+        />
+        <SubmitButton
+          isGenerating={isGenerating}
+          isDisabled={isSubmitDisabled}
+          onClick={handleSubmit}
+        />
       </div>
+
+    </div>
+  </div>
+
+  {/* The results section, which appears only after hooks are generated */}
+  {generatedHooks.length > 0 && !isGenerating && (
+    <ResultsSection hooks={generatedHooks} onReset={handleReset} />
+  )}
+</div>
     </div>
   );
 };
