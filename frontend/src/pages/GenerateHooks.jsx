@@ -165,7 +165,7 @@ const SubmitButton = ({ isGenerating, isDisabled, onClick }) => (
     <button
       onClick={onClick}
       disabled={isGenerating || isDisabled}
-      className="w-full md:w-auto inline-flex items-center justify-center px-10 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      className="w-full md:w-auto inline-flex items-center justify-center px-10 py-3 bg-indigo-700 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
     >
       {isGenerating ? (
         <>
@@ -197,7 +197,7 @@ const HookResultItem = ({ hook }) => {
       <button
         onClick={handleCopy}
         className={`ml-4 text-xl transition-colors ${
-          copied ? "text-green-600" : "text-blue-600 hover:text-blue-800"
+          copied ? "text-green-600" : "text-indigo-600 hover:text-blue-800"
         }`}
         title={copied ? "Copied!" : "Copy Hook"}
       >

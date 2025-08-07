@@ -56,12 +56,14 @@ const Hero = () => {
           {/* Main Heading with Gradient Text */}
 <h1 className="text-5xl md:text-6xl lg:text-7xl mb-6 font-black text-gray-900 leading-tight">
   Turning boring scripts intoㅤ
-  <span className="relative bg-gradient-to-r from-slate-800 via-gray-900 to-black bg-clip-text text-transparent animate-gradient-x">
-    viral hooks
-    <svg className="absolute left-[-10px] bottom-0 w-[calc(100%+20px)] h-[12px]" viewBox="0 0 170 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 5 C 30 6, 60 4, 90 5.5 C 120 7, 150 5, 170 5" stroke="#000" strokeWidth="2" fill="transparent" strokeLinecap="round"/>
-    </svg>
-  </span>
+  <span className="relative bg-gradient-to-r from-indigo-300 via-indigo-600 to-indigo-300 bg-clip-text text-transparent animate-gradient-x">
+  viral hooks
+  <svg className="absolute left-[-10px] bottom-0 w-[calc(100%+20px)] h-[12px]" viewBox="0 0 170 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 5 C 30 6, 60 4, 90 5.5 C 120 7, 150 5, 170 5" stroke="#000" strokeWidth="2" fill="transparent" strokeLinecap="round"/>
+  </svg>
+</span>
+
+
 </h1>
 
 

@@ -130,7 +130,7 @@ const Navbar = () => {
               href="#demo"
               className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-base font-medium text-white shadow-sm hover:bg-indigo-700"
             >
-              Get a Demo
+              SignUp
             </a>
           </div>
         </div>
