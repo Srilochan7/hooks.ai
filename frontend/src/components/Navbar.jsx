@@ -9,11 +9,14 @@ const Navbar = () => {
 
   // An array for navigation links to avoid repetition
   const navLinks = [
-    { href: '#platform', text: 'Platform' },
-    { href: '#use-cases', text: 'Use Cases' },
-    { href: '#resources', text: 'Resources' },
-    { href: '#pricing', text: 'Pricing' },
-    { href: '#ai-tools', text: 'AI Tools' },
+    // { href: '#features', text: 'Features' },
+    // { href: '#generate-hook', text: 'Generate' },
+    // { href: '#usecases', text: 'Usecases' },
+    // { href: '#pricing', text: 'Pricing' },
+    // { href: '#use-cases', text: 'Use Cases' },
+    // { href: '#resources', text: 'Resources' },
+    // { href: '#pricing', text: 'Pricing' },
+    // { href: '#ai-tools', text: 'AI Tools' },
   ];
 
   return (
@@ -59,7 +62,7 @@ const Navbar = () => {
               href="#demo"
               className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors duration-200 hover:bg-indigo-700 hover:shadow-md"
             >
-              Get a Demo
+              SignUp
             </a>
           </div>
 
