@@ -11,3 +11,13 @@ pinecone-client
 
 # Optional but recommended for token handling, parsing, performance
 tiktoken
+
+
+langchain_community
+
+langchain-community
+
+langchain_core
+
+
+langchain-core

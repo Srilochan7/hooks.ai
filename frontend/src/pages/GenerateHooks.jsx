@@ -6,7 +6,8 @@ import { MdEmail } from 'react-icons/md';
 
 // --- Constants and Configuration ---
 // Centralized configuration for easy management.
-const MIN_HOOK_LENGTH = 30;
+const MIN_HOOK_LENGTH = 10;
+const MAX_HOOK_LENGTH = 30;
 
 const INITIAL_FORM_DATA = {
   hookContent: '',
@@ -19,7 +20,6 @@ const INITIAL_FORM_DATA = {
 
 const dotPattern = `data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e2e8f0' fill-opacity='0.6' fill-rule='evenodd'%3E%3Ccircle cx='20' cy='20' r='2'/%3E%3C/g%3E%3C/svg%3E`;
 
-const audienceOptions = ['Subscribers', 'Customers', 'Internal Email', 'Leads', 'Investors', 'Partners', 'Candidates'];
 const themeOptions = ['Productivity', 'Marketing', 'Sales', 'Technology', 'Health', 'Finance', 'Education', 'Lifestyle', 'Business', 'Career'];
 
 // Hook templates for different tones and intents
@@ -325,32 +325,30 @@ const HookGeneratorScreen = () => {
       />
 
       {/* Container for the inline controls */}
-      <div className="flex flex-wrap items-end gap-7 mt-6">
-        <CompactSelectInput
-          name="tone"
-          label="Tone"
-          value={formData.tone}
-          onChange={handleInputChange}
-          options={['Professional', 'Casual', 'Urgent', 'Friendly', 'Mysterious']}
-        />
-        <CompactSelectInput
-          name="intent"
-          label="Intent"
-          value={formData.intent}
-          onChange={handleInputChange}
-          options={['Driving Curiosity', 'Educational', 'Entertainment', 'Inspirational', 'Sales']}
-        />
-        <ThemeSelect
-          value={formData.theme}
-          onChange={(e) => setFormData(prev => ({...prev, theme: e.target.value}))}
-          options={themeOptions}
-        />
-        <SubmitButton
-          isGenerating={isGenerating}
-          isDisabled={isSubmitDisabled}
-          onClick={handleSubmit}
-        />
-      </div>
+      <div className="flex items-end justify-between mt-6">
+  {/* Wrapper for the two select inputs on the left */}
+  <div className="flex items-end gap-4">
+    <CompactSelectInput
+      name="intent"
+      label="Intent"
+      value={formData.intent}
+      onChange={handleInputChange}
+      options={['General', 'Bold', 'Question-based', 'Intruging', 'Action', 'Story based', 'Motivational', 'List based']}
+    />
+    {/* <ThemeSelect
+      value={formData.theme}
+      onChange={(e) => setFormData(prev => ({...prev, theme: e.target.value}))}
+      options={themeOptions}
+    /> */}
+  </div>
+
+  {/* Submit button pushed to the right */}
+  <SubmitButton
+    isGenerating={isGenerating}
+    isDisabled={isSubmitDisabled}
+    onClick={handleSubmit}
+  />
+</div>
 
     </div>
   </div>

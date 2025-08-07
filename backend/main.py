@@ -6,7 +6,6 @@ app = FastAPI()
 
 class InputPayload(BaseModel):
     context: str
-    audience: str
     tone: str
     intent: str
     theme:str
@@ -18,7 +17,6 @@ async def generate_content(data: InputPayload):
         "message" : "recieved input successfully",
         "data" : {
             "context":data.context,
-            "audience":data.audience,
             "tone":data.tone,
             "intent": data.intent,
             "theme":data.theme
