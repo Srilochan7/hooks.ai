@@ -1,0 +1,31 @@
+# 💥 Python compiled crap
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# 💀 Virtual environment
+venv/
+venv
+/venv
+
+
+
+# 🤫 Environment secrets
+.env
+.env.*
+
+# 🚫 VSCode or JetBrains IDEs
+.vscode/
+.idea/
+
+# 📦 PIP dependency logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# 🧪 Testing artifacts
+htmlcov/
+.cov

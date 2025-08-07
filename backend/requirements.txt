@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+python-dotenv
+
+langchain>=0.2.0
+groq
+openai
+
+sentence-transformers
+pinecone-client
+
+# Optional but recommended for token handling, parsing, performance
+tiktoken

@@ -1,0 +1,36 @@
+hookai-rag-backend/
+├── app/
+│   ├── __init__.py
+│   ├── main.py                 # FastAPI app entrypoint
+│   ├── api/
+│   │   ├── __init__.py
+│   │   └── routes.py           # All API endpoints (e.g. /generate-hook)
+│   ├── core/
+│   │   ├── config.py           # Env variables, settings
+│   │   └── logger.py           # Custom logger setup
+│   ├── models/
+│   │   ├── embeddings.py       # Vector embedding logic
+│   │   └── prompt_templates.py # LLM prompt templates
+│   ├── services/
+│   │   ├── retriever.py        # pgvector retrieval logic
+│   │   ├── generator.py        # LLM call logic (OpenAI, Ollama)
+│   │   └── postprocess.py      # Ranking, scoring, deduplication
+│   ├── schemas/
+│   │   └── payloads.py         # Pydantic models for request/response
+│   └── utils/
+│       └── text_utils.py       # Chunking, keyword extraction, etc.
+│
+├── database/
+│   ├── db.py                   # pgvector connection setup
+│   └── seed.py                 # Optional: seed data/scripts
+│
+├── tests/
+│   ├── test_routes.py
+│   ├── test_retriever.py
+│   └── test_generator.py
+│
+├── Dockerfile
+├── requirements.txt
+├── .env                        # Secrets and API keys (ignored in .gitignore)
+├── .gitignore
+└── README.md
