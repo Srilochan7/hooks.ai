@@ -13,11 +13,15 @@ pinecone-client
 tiktoken
 
 
-langchain_community
+
 
 langchain-community
 
-langchain_core
+
 
 
 langchain-core
+
+
+langchain-groq
+

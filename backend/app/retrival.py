@@ -1,18 +1,22 @@
-from langchain_community.vectorstores import Pinecone 
-from langchain_community.embeddings import HuggingFaceEmbeddings
+# import os
+# from dotenv import load_dotenv
+# from langchain_community.vectorstores import Pinecone
+# from langchain_huggingface import HuggingFaceEmbeddings
 
-embeddings = HuggingFaceEmbeddings(
-    model_name = "all-MiniLM-L6-v2"
-)
+# load_dotenv()
 
-vector_store = Pinecone.from_existing_index(
-    index_name="hooks-ai",
-    embedding=embeddings
-)
+# INDEX_NAME = os.getenv("PINECONE_INDEX_NAME")
 
-retriever = vector_store.as_retriever(
-    search_kwargs = {
-        "k":5,
-        "filter":{"category":"general"}
-    }
-)
+# embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+
+# def get_retriever(category: str, k: int = 5):
+#     vector_store = Pinecone.from_existing_index(
+#         index_name=INDEX_NAME,
+#         embedding=embeddings
+#     )
+#     return vector_store.as_retriever(
+#         search_kwargs={
+#             "k": k,
+#             "filter": {"category": category}
+#         }
+#     )
