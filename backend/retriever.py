@@ -9,11 +9,13 @@ CHROMA_DB_DIR = os.getenv("CHROMA_DB_DIR", "./chroma_db")
 
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
+vector_store = Chroma(
+    persist_directory=CHROMA_DB_DIR,
+    embedding_function=embeddings
+)
+
 def get_candidate_hooks(category: str, content: str, k: int = 5):
-    vector_store = Chroma(
-        persist_directory=CHROMA_DB_DIR,
-        embedding_function=embeddings
-    )
+    category = category.lower()
     results = vector_store.similarity_search(
         query=content,
         k=k,
