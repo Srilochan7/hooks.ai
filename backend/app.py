@@ -1,10 +1,16 @@
 import os
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+import logging
+from typing import List, Optional
+from fastapi import FastAPI, HTTPException, status
+from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from fastapi.middleware.cors import CORSMiddleware
-from retriever import get_candidate_hooks
+from retriever import get_candidate_hooks, get_all_categories
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 
@@ -13,16 +19,24 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 if not GROQ_API_KEY:
     raise ValueError("GROQ_API_KEY is missing in .env")
 
+# Initialize LLM
 llm = ChatGroq(
     model="llama3-8b-8192",
     temperature=0.3,
     groq_api_key=GROQ_API_KEY
 )
 
-app = FastAPI(title="Hook Selection API with LLM")
+app = FastAPI(
+    title="Hook Selection API with LLM",
+    description="AI-powered hook generation using RAG",
+    version="1.0.0"
+)
 
+# CORS configuration
 origins = [
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "http://localhost:3000",  # Add React default port
+    "http://127.0.0.1:5173",
 ]
 
 app.add_middleware(
@@ -34,104 +48,102 @@ app.add_middleware(
 )
 
 class InputPayload(BaseModel):
+    category: str = Field(..., min_length=1, description="Hook category")
+    content: str = Field(..., min_length=10, description="Content to generate hook for")
+
+class HookResponse(BaseModel):
+    chosen_hook: str
     category: str
-    content: str
+    candidates_found: int
 
-@app.post("/choose_best_hook")
-async def choose_best_hook(payload: InputPayload):
+class ErrorResponse(BaseModel):
+    detail: str
+    error_code: Optional[str] = None
+
+@app.get("/health")
+async def health_check():
+    """Health check endpoint"""
+    return {"status": "healthy", "service": "Hook Generator API"}
+
+@app.get("/categories", response_model=List[str])
+async def get_categories():
+    """Get all available hook categories"""
     try:
-        candidates = get_candidate_hooks(payload.category, payload.content, k=5)
+        categories = get_all_categories()
+        return categories
+    except Exception as e:
+        logger.error(f"Failed to get categories: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to retrieve categories"
+        )
+
+@app.post("/choose_best_hook", response_model=HookResponse)
+async def choose_best_hook(payload: InputPayload):
+    """Generate the best hook for given content and category"""
+    try:
+        logger.info(f"Generating hook for category: {payload.category}")
+        
+        candidates = get_candidate_hooks(
+            payload.category, 
+            payload.content, 
+            k=5
+        )
+        
         if not candidates:
-            return {"message": "No hooks found for this category"}
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"No hooks found for category '{payload.category}'"
+            )
 
+        candidate_texts = "\n".join([
+            f"{i+1}. {doc.page_content}" 
+            for i, doc in enumerate(candidates)
+        ])
 
-        candidate_texts = "\n".join([f"{i+1}. {doc.page_content}" for i, doc in enumerate(candidates)])
+        prompt = f"""You are an expert social media strategist and copywriter.
 
-        prompt = f"""
-You are an expert social media strategist.
-
-Here are {len(candidates)} candidate hooks from the "{payload.category}" category:
+CANDIDATE HOOKS ({len(candidates)} options from "{payload.category}" category):
 {candidate_texts}
 
-The user’s content is:
+USER'S CONTENT:
 "{payload.content}"
 
-TASK:
-- Pick the single hook that best matches the tone, style, and relevance to the content.
-- The hook should be single line and short
-- If needed, you may slightly adapt the hook to better fit the content.
-- Return ONLY the final chosen hook, nothing else.
-"""
+INSTRUCTIONS:
+1. Analyze the user's content for tone, style, and key themes
+2. Select the ONE hook that best matches the content's essence
+3. If needed, make minor adaptations to improve relevance (keep it concise)
+4. Return ONLY the final chosen hook - no explanations or extra text
+5. The hook should be punchy, engaging, and under 100 characters when possible
+
+Just return the hook thats it, no more extra characters
+
+CHOSEN HOOK:"""
 
         response = llm.invoke(prompt)
+        chosen_hook = response.content.strip()
+        
+        # Clean up any unwanted prefixes or quotes
+        if chosen_hook.startswith('"') and chosen_hook.endswith('"'):
+            chosen_hook = chosen_hook[1:-1]
+        
+        logger.info(f"Successfully generated hook: {chosen_hook[:50]}...")
+        
+        return HookResponse(
+            chosen_hook=chosen_hook,
+            category=payload.category,
+            candidates_found=len(candidates)
+        )
 
-        return {"chosen_hook": response.content.strip()}
-
+    except HTTPException:
+        raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Unexpected error: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An unexpected error occurred while generating the hook"
+        )
 
-
-# import os
-# from fastapi import FastAPI, HTTPException
-# from pydantic import BaseModel
-# from dotenv import load_dotenv
-# from langchain_groq import ChatGroq
-# from retriever import get_candidate_hooks
-
-# load_dotenv()
-
-# GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-
-# if not GROQ_API_KEY:
-#     raise ValueError("GROQ_API_KEY is missing in .env")
-
-# llm = ChatGroq(
-#     model="llama3-8b-8192",
-#     temperature=0.3,  # Lower temp for more deterministic choice
-#     groq_api_key=GROQ_API_KEY
-# )
-
-# app = FastAPI(title="Hook Selection API with LLM")
-
-# class InputPayload(BaseModel):
-#     category: str
-#     content: str
-
-# @app.post("/choose_best_hook")
-# async def choose_best_hook(payload: InputPayload):
-#     try:
-#         # Step 1: Retrieve candidate hooks
-#         candidates = get_candidate_hooks(payload.category, payload.content, k=5)
-#         if not candidates:
-#             return {"message": "No hooks found for this category"}
-
-#         candidate_texts = "\n".join(
-#             [f"{i+1}. {doc.page_content}" for i, doc in enumerate(candidates)]
-#         )
-
-#         # Step 2: Ask LLM to choose the best one
-#         prompt = f"""
-# You are an expert social media strategist.
-
-# Here are {len(candidates)} candidate hooks from the "{payload.category}" category:
-# {candidate_texts}
-
-# The user’s content is:
-# "{payload.content}"
-
-# TASK:
-# - Pick the single hook that best matches the tone, style, and relevance to the content.
-# - The hook should be single line and short
-# - If needed, you may slightly adapt the hook to better fit the content.
-# - Return ONLY the final chosen hook, nothing else.
-# """
-
-#         response = llm.invoke(prompt)
-
-#         return {
-#             "chosen_hook": response.content.strip(),
-#             # "candidates_considered": [doc.page_content for doc in candidates]
-#         }
-
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

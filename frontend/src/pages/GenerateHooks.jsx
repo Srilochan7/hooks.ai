@@ -97,7 +97,7 @@ const ResultsSection = ({ hooks, onReset }) => (
     </div>
     <div className="text-center mt-10">
       <button
-        onClick={onReset}
+        onClick={SubmitButton}
         className="bg-gray-700 hover:bg-gray-800 text-white font-semibold py-3 px-8 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all"
       >
         <span className="mr-2">🔄</span>
