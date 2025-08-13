@@ -115,7 +115,7 @@ INSTRUCTIONS:
 3. If needed, make minor adaptations to improve relevance (keep it concise)
 4. Return ONLY the final chosen hook - no explanations or extra text
 5. The hook should be punchy, engaging, and under 100 characters when possible
-
+6. Do NOT include '{{}}'—just add the niche of the user..
 Just return the hook thats it, no more extra characters
 
 CHOSEN HOOK:"""
