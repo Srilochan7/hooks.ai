@@ -7,19 +7,29 @@ from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from fastapi.middleware.cors import CORSMiddleware
 from retriever import get_candidate_hooks, get_all_categories
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 load_dotenv()
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+gemini_api_key = os.getenv("GOOGLE_API_KEY")
 
-if not GROQ_API_KEY:
-    raise ValueError("GROQ_API_KEY is missing in .env")
+# if not GROQ_API_KEY:
+#     raise ValueError("GROQ_API_KEY is missing in .env")
 
-llm = ChatGroq(
-    model="llama3-8b-8192", temperature=0.3, groq_api_key=GROQ_API_KEY
+# llm = ChatGroq(
+#     model="llama3-8b-8192", temperature=0.3, groq_api_key=GROQ_API_KEY
+# )
+
+if not gemini_api_key:
+    raise ValueError("GOOGLE_API_KEY is missing in .env")
+
+llm = ChatGoogleGenerativeAI(
+    model="gemini-2.0-flash", temperature=0.3, api_key=gemini_api_key
 )
+
 
 app = FastAPI(
     title="Hook Selection API with LLM",
@@ -96,11 +106,16 @@ INSTRUCTIONS:
 - Pick ONE hook that best matches the content
 - Keep it under 100 characters if possible
 - Return ONLY the final hook, no extra text
+- Do NOT include '{{}}'—just add the niche of the user.
+- dont generate the same hook always
+Just return the hook, nothing else.
 
 CHOSEN HOOK:"""
 
         response = llm.invoke(prompt)
-        chosen_hook = getattr(response, "content", "").strip()
+        # chosen_hook = getattr(response, "content", "").strip()  this is for GROQ
+        chosen_hook = response.content.strip()
+
 
         if not chosen_hook:
             raise HTTPException(

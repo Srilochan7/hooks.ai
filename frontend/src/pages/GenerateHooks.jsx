@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaCopy } from 'react-icons/fa';
+import { Copy } from 'lucide-react';
 
 const API_BASE_URL = 'http://localhost:8000';
 const MIN_HOOK_LENGTH = 10;
@@ -83,7 +83,7 @@ const HookResultItem = ({ hook }) => {
         className={`ml-4 text-xl transition-colors ${copied ? "text-green-600" : "text-indigo-600 hover:text-blue-800"}`}
         title={copied ? "Copied!" : "Copy Hook"}
       >
-        <FaCopy />
+        <Copy />
       </button>
     </div>
   );
@@ -97,7 +97,7 @@ const ResultsSection = ({ hooks, onReset }) => (
     </div>
     <div className="text-center mt-10">
       <button
-        onClick={SubmitButton}
+        onClick={onReset}
         className="bg-gray-700 hover:bg-gray-800 text-white font-semibold py-3 px-8 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all"
       >
         <span className="mr-2">🔄</span>
@@ -145,13 +145,12 @@ const HookGeneratorScreen = () => {
       const data = await response.json();
 
       if (data.chosen_hook) {
-  setGeneratedHooks([data.chosen_hook]);
-} else if (data.message) {
-  setError(data.message);
-} else {
-  throw new Error("No hook was returned from the API.");
-}
-
+        setGeneratedHooks([data.chosen_hook]);
+      } else if (data.message) {
+        setError(data.message);
+      } else {
+        throw new Error("No hook was returned from the API.");
+      }
 
     } catch (err) {
       console.error("Failed to generate hook:", err);

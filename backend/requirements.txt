@@ -13,7 +13,7 @@ pinecone-client
 tiktoken
 
 
-
+langchain-google-genai
 
 langchain-community
 
